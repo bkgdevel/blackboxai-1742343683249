@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo-Swine: Die letzten Schweine der Welt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #0a0a0a;
+            color: #00ff00;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        #game-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hud {
+            position: fixed;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .crosshair {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff00;
+            font-size: 24px;
+            z-index: 3;
+        }
+
+        .stats {
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+        }
+
+        .inventory {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .inventory-slot {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #00ff00;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat {
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 20px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: #00ff00;
+            transition: width 0.3s ease;
+        }
+
+        @keyframes neon-pulse {
+            0% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00; }
+            50% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
+            100% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00; }
+        }
+
+        .neon-text {
+            animation: neon-pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-black">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <h1 class="text-4xl mb-4 neon-text">Neo-Swine</h1>
+        <h2 class="text-xl mb-8">Die letzten Schweine der Welt</h2>
+        <div class="loading-bar">
+            <div id="loading-progress" class="loading-progress"></div>
+        </div>
+        <p id="loading-text" class="mt-4">Initializing Voxel Engine...</p>
+    </div>
+
+    <!-- Game Canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- HUD Elements -->
+    <div class="crosshair">+</div>
+
+    <div class="hud stats">
+        <div class="mb-2">
+            <i class="fas fa-heart mr-2"></i>
+            <span id="health">100</span>
+        </div>
+        <div class="mb-2">
+            <i class="fas fa-coins mr-2"></i>
+            <span id="oink-balance">0 $OINK</span>
+        </div>
+        <div>
+            <i class="fas fa-location-dot mr-2"></i>
+            <span id="coordinates">0, 0, 0</span>
+        </div>
+    </div>
+
+    <div class="hud inventory">
+        <div class="inventory-slot" data-slot="1"></div>
+        <div class="inventory-slot" data-slot="2"></div>
+        <div class="inventory-slot" data-slot="3"></div>
+        <div class="inventory-slot" data-slot="4"></div>
+        <div class="inventory-slot" data-slot="5"></div>
+        <div class="inventory-slot" data-slot="6"></div>
+        <div class="inventory-slot" data-slot="7"></div>
+        <div class="inventory-slot" data-slot="8"></div>
+        <div class="inventory-slot" data-slot="9"></div>
+    </div>
+
+    <div class="hud chat">
+        <div id="chat-messages" class="h-32 overflow-y-auto mb-2"></div>
+        <input type="text" id="chat-input" class="w-full bg-black border border-green-500 text-green-500 px-2 py-1 hidden" placeholder="Press T to chat...">
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/client.js" type="module"></script>
+</body>
+</html>

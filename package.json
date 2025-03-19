@@ -1,0 +1,17 @@
+{
+  "name": "neo-swine-voxel",
+  "version": "1.0.0",
+  "description": "Neo-Swine: Die letzten Schweine der Welt - A Cyberpunk Web3 Voxel Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "ws": "^8.13.0",
+    "web3": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
